@@ -7,6 +7,7 @@ class Header extends Component {
             <>
                 <header>
                     <div className="logo">Logo</div>
+                    <h1>Test</h1>
                     <input/>
                 </header>
             </>

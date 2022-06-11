@@ -1,19 +1,14 @@
-import React,{ Component } from "react";
 
-
-class Header extends Component {
-    render(){
+const Header = (props) => {
         return (
             <>
-                <header>
-                    <div className="logo">Logo</div>
-                    <h1>Test</h1>
-                    <input/>
+                <header className={props.active ? 'active': 'non-active'}>
+                    <div className="logo">Code news</div>
+                    <input onChange={props.keyword} />
+                    <button onClick={props.changeColor}>Change it</button>
                 </header>
             </>
         )
-    }
-
 }
 
 export default Header;

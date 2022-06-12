@@ -1,13 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import Header from "./components/header";
-import './styles/styles.css'
-
-const App = () => (
-    <div>
-        <Header/>
-    </div>
-)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './app-3';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App/>)
+root.render(
+    <App initialCount={0}/>
+);
+

@@ -1,25 +1,12 @@
-import React,{ Component} from 'react';
-import UsersItem from './usersItem';
-import { MyContext } from '../context';
+import { Outlet } from 'react-router-dom'
 
 
-class User extends Component {
-    // static contextType = MyContext;
-
-
-    render(){
-       // console.log(this.context)
-        return(
-            <>
-                <MyContext.Consumer>
-                    { context => {
-                        console.log(context)
-                    }}
-                </MyContext.Consumer>
-                <UsersItem/>
-            </>
-         )
-    }
+const Users = () => {
+    return (
+        <div className='user_layout'>
+            <Outlet/>
+        </div>
+    )
 }
 
-export default User;
+export default Users

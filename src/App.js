@@ -1,81 +1,50 @@
-import { BrowserRouter, Routes, Route, Link, NavLink, Navigate } from 'react-router-dom'
-
-import Home from './components/home'
-import Posts from './components/posts'
-import Profile from './components/profile';
-import PostItem from './components/postsItem';
-import Users from './components/users';
-import Guests from './components/guests';
-import Admins from './components/admins';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addMovie } from "./store/movies";
+import { setType, fetchUsers } from "./store/users";
 
 const App = () => {
-  const user = true;
+  const movies = useSelector((state) => state.movies.list);
+  const users = useSelector((state) => state.users);
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchUsers())
+    .unwrap()
+    .then((response)=>{
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },[])
 
 
-  return(
-    <BrowserRouter>
-      <div className="container">
-        <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-          <Link
-            to="/"
-            className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
-          >
-            <span className="fs-4">My app</span>
-          </Link>
+  return (
+    <>
+      <h2>Movies</h2>
+      <ul>
+        {movies
+          ? movies.map((movie) => <li key={movie.id}>{movie.title}</li>)
+          : null}
+      </ul>
+      <hr />
+      <button onClick={() => dispatch(addMovie({ id: 3, title: "Batman" }))}>
+        Add movie
+      </button>
+      <hr />
+      <h3>User type:{users.type}</h3>
+      <button onClick={() => dispatch(setType("Admin"))}>Set type</button>
+      <hr />
 
-          <ul className="nav nav-pills">
-            <li className="nav-item">
-              <NavLink 
-                to="/" 
-                className={({isActive})=> isActive ? 'nav-link active':'nav-link' }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <Link to="posts" className="nav-link">
-                Posts
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="profile" className="nav-link">
-                Profile
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="users" className="nav-link">
-                Users
-              </Link>
-            </li>
-          </ul>
-        </header>
+      <div>{users.loading ? "loading" : null}</div>
+      <ul>{users ? users.users.map((user) => 
+        <li key={user.id}>{user.name}</li>) 
+      : null}</ul>
 
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="posts" element={<Posts/>}></Route>
-          <Route path="posts/:id" element={<PostItem/>}></Route>
-          {/* <Route path="profile" element={<Profile />}></Route> */}
-          <Route path="profile" element={
-            user ?<Profile />:<Navigate replace to="/" />}
-          >
-          </Route>
-          <Route path="users" element={<Users/>}>
-            <Route path="guests" element={<Guests/>}></Route>
-            <Route path="admins" element={<Admins/>}></Route>
-          </Route>
-          <Route
-            path="*"
-            element={
-              <>
-                <h1>Sorry, nothing found</h1>
-              </>
-            }
-          />
-        </Routes>
-      </div>
-
-    </BrowserRouter>
-  )
-}
+      {/* <button onClick={() => dispatch(fetchUsers())}>Get users</button> */}
+    </>
+  );
+};
 
 export default App;
